@@ -43,7 +43,13 @@ ver = r.read_short()
 count = r.read_int()
 
 #Todo: Loop
+writer = ""
 
+writer += "//simple growtopia items reader writen on python3\n\n"
+writer += "//id|editableType|itemCategory|actionType|hitsoundType|name|textureName|textureHash|itemKind|val1|textureX|textureY|spreadType|isStripeyWallpaper|collisionType|breakHits|dropChance|clothingType|rarity|maxAmount|extraFile|extraFileHash|audioVolume|petName|petPrefix|petSuffix|petAbility|seedBase|seedOverlay|treeBase|treeLeaves|seedColor|seedOverlayColor|unkval1|growTime|val2|isRayman|extraOptions|texture2|extraOptions2|punchOptions\n\n"
+
+writer += 'version|' + str(ver) + '\n'
+writer += 'item_count|' + str(count) + '\n\n\n'
 for i in range(0,count):
 	id = r.read_int()
 	editableType = r.read_char()
@@ -56,7 +62,7 @@ for i in range(0,count):
 	r.index += nameLen
 	
 	textLen = r.read_int16()
-	textName = xordec(id,textLen,r.index, True, r.buff)
+	textureName = xordec(id,textLen,r.index, True, r.buff)
 	r.index += textLen
 	
 	textureHash = r.read_int()
@@ -125,4 +131,9 @@ for i in range(0,count):
 	r.index += punchOptionsLen
 	
 	r.index += 13 + 8
-	
+	writer += str(id) + '|' + str(editableType) + '|' + str(itemCategory) + '|' + str(actionType) + '|' + str(hitsoundType) + '|' + name + '|' + textureName + '|' + str(textureHash) + '|' + str(itemKind) + '|' + str(val1) + '|' + str(textureX) + '|' + str(textureY) + '|' + str(spreadType) + '|' + str(isStripeyWallpaper) + '|' + str(collisionType) + '|' + str(breakHits) + '|' + str(dropChance) + '|' + str(clothingType) + '|' + str(rarity) + '|' + str(maxAmount) + '|' + extraFile + '|' + str(extraFileHash) + '|' + str(audioVolume) + '|' + petName + '|' + petPrefix + '|' + petSuffix + '|' + petAbility + '|' + str(seedBase) + '|' + str(seedOverlay) + '|' + str(treeBase) + '|' + str(treeLeaves) + '|' + str(seedColor) + '|' + str(seedOverlayColor) + '|' + str(unkval1) + '|' + str(growTime) + '|' + str(val2) + '|' + str(isRayman) + '|' + extraOptions + '|' + texture2 + '|' + extraOptions2 + '|' + punchOptions + '\n'
+
+ok = open('data.txt', 'w')
+ok.write(writer)
+ok.close()
+print('Succes deserialize items.dat, Total Item: ' + str(count) + ' Version: ' + str(ver))
