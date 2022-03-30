@@ -45,8 +45,13 @@ fs.readFile("items.dat", function(err, buffer)
 	const r = new BinaryReader(buffer);
 	var version = r.read_short();
 	var count = r.read_int();
+	var writer = ""
+	writer += "//id|editableType|itemCategory|actionType|hitsoundType|name|textureName|textureHash|itemKind|val1|textureX|textureY|spreadType|isStripeyWallpaper|collisionType|breakHits|dropChance|clothingType|rarity|maxAmount|extraFile|extraFileHash|audioVolume|petName|petPrefix|petSuffix|petAbility|seedBase|seedOverlay|treeBase|treeLeaves|seedColor|seedOverlayColor|unkval1|growTime|val2|isRayman|extraOptions|texture2|extraOptions2|punchOptions\n\n"
+
+	writer += 'version|' + version + '\n'
+    writer += 'item_count|' + count + '\n\n\n'
+	
 	for (var i = 0; i < count; i++) {
-    // do something
 	    var id = r.read_int();
         var editableType = r.read_char();
         var itemCategory = r.read_char();
@@ -126,12 +131,17 @@ fs.readFile("items.dat", function(err, buffer)
 		var punchOptionsLen = r.read_short()
 	    var punchOptions = xordec(id,punchOptionsLen,r.index, true, r.buff)
 	    r.index += punchOptionsLen
-	
 	    r.index += 13 + 8
 		
-	    console.log(name);
-		
+		writer += id + '|' + editableType + '|' + itemCategory + '|' + actionType + '|' + hitsoundType + '|' + name + '|' + textureName + '|' + textureHash + '|' + itemKind + '|' + val1 + '|' + textureX + '|' + textureY + '|' + spreadType + '|' + isStripeyWallpaper + '|' + collisionType + '|' + breakHits + '|' + dropChance + '|' + clothingType + '|' + rarity + '|' + maxAmount + '|' + extraFile + '|' + extraFileHash + '|' + audioVolume + '|' + petName + '|' + petPrefix + '|' + petSuffix + '|' + petAbility + '|' + seedBase + '|' + seedOverlay + '|' + treeBase + '|' + treeLeaves + '|' + seedColor + '|' + seedOverlayColor + '|' + unkval1 + '|' + growTime + '|' + val2 + '|' + isRayman + '|' + extraOptions + '|' + texture2 + '|' + extraOptions2 + '|' + punchOptions + '\n'
 	}
+	fs.writeFile("datajs.txt", writer, (err) => { 
+      if (err) console.log(err); 
+      else {
+		  console.log("File written successfully"); 
+	  }
+	}); 
+	console.log(writer);
 });
 
 
